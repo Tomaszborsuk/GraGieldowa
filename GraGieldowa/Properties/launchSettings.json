@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "GraGieldowa (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "GraGieldowa (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

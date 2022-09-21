@@ -1,4 +1,7 @@
-﻿using Microsoft.UI.Xaml;
+﻿using GraGieldowa.Data;
+using GraGieldowa.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -33,6 +36,17 @@ namespace GraGieldowa
         public App()
         {
             this.InitializeComponent();
+            using (var db = new ApplicationDbContext())
+            {
+                //db.Database.EnsureCreated();
+                ////db.Database.Migrate();
+                //var users = db.Users.ToList();
+                //var user = new User();
+                //user.UserName = "Tomasz";
+                //user.AccountBalance = 1000;
+                //db.Add(user);
+                //db.SaveChanges();
+            }
         }
 
         /// <summary>

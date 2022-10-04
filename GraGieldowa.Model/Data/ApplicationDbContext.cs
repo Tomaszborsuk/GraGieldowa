@@ -12,6 +12,8 @@ namespace GraGieldowa.Data
     public class ApplicationDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<OpenPosition> OpenPositions { get; set; }
+        public DbSet<ClosedPosition> ClosedPositions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

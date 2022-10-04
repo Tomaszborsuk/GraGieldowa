@@ -11,6 +11,9 @@
     <UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="AddUser.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -40,6 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraGieldowa.Model\GraGieldowa.Model.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AddUser.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!-- 

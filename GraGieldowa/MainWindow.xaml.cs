@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using GraGieldowa.Data;
+using GraGieldowa.Model;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -23,14 +25,34 @@ namespace GraGieldowa
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        public List<User> ViewModel { get; }
+
         public MainWindow()
         {
             this.InitializeComponent();
+            ViewModel = new List<User>();
+            using (var db = new ApplicationDbContext())
+            {
+                var usersList = db.Users.ToList();
+                //UsersComboBox.DataContext = usersList;
+                ViewModel = usersList;
+            }
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            myButton.Content = "Clicked";
+            //myButton.Content = "Clicked";
         }
+
+        private void AddUser_Click(object sender, RoutedEventArgs e)
+        {
+            frame.Navigate(typeof(AddUser));
+        }
+
+        private void UserComboBox_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }

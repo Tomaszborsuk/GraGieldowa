@@ -39,7 +39,7 @@ namespace GraGieldowa
             using (var db = new ApplicationDbContext())
             {
                 //db.Database.EnsureCreated();
-                ////db.Database.Migrate();
+                //db.Database.Migrate();
                 //var users = db.Users.ToList();
                 //var user = new User();
                 //user.UserName = "Tomasz";

@@ -14,6 +14,7 @@
   <ItemGroup>
     <None Remove="AddUser.xaml" />
     <None Remove="MainPage.xaml" />
+    <None Remove="TradeStocks.xaml" />
     <None Remove="UserManagement.xaml" />
   </ItemGroup>
 
@@ -44,7 +45,13 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\xAPI25-XTB-net\xAPI25-XTB-net\src\SyncAPIConnector\SyncAPIConnect.csproj" />
     <ProjectReference Include="..\GraGieldowa.Model\GraGieldowa.Model.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="TradeStocks.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainPage.xaml">

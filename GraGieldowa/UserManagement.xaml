@@ -1,0 +1,45 @@
+﻿<Page
+    x:Class="GraGieldowa.UserManagement"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:GraGieldowa"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    x:Name="UsersPage"
+    NavigationCacheMode="Enabled">
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
+
+        <StackPanel>
+            <TextBlock Text="{x:Bind CurrentUser.UserName}"/>
+            <TextBlock Text="{x:Bind CurrentUser.AccountBalance}"/>
+        </StackPanel>
+        
+        <ComboBox Background="White" x:Name="UsersComboBox" SelectionChanged="UserComboBox_SelectionChanged" Header="Użytkownicy" PlaceholderText="Wybierz użytkownika" Width="200">
+            <ListView ItemsSource="{x:Bind ViewModel, Mode=OneWay}"
+                      DisplayMemberPath="UserName"
+                      SelectionChanged="UserComboBox_SelectionChanged"
+                      x:Name="ListViewUsers"
+                      SelectionMode="Single"
+                          />
+        </ComboBox>
+
+        <Button Background="White" x:Name="AddUserButton" Content="Dodaj nowego użytkownika" Click="AddUser_Click" Margin="0 10 0 0"/>
+
+        <Frame x:Name="LocalFrame" Margin="24" Background="White">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition/>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+
+    </StackPanel>
+    <!--<Frame  Background="Yellow"
+                Grid.Row="1"
+                x:Name="frame"
+                VerticalAlignment="Center"
+               />-->
+</Page>

@@ -13,6 +13,8 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="AddUser.xaml" />
+    <None Remove="MainPage.xaml" />
+    <None Remove="UserManagement.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GraGieldowa.Model\GraGieldowa.Model.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="UserManagement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Page Update="AddUser.xaml">

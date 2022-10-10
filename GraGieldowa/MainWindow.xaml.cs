@@ -14,6 +14,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ApplicationSettings;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -30,28 +31,71 @@ namespace GraGieldowa
         public MainWindow()
         {
             this.InitializeComponent();
-            ViewModel = new List<User>();
-            using (var db = new ApplicationDbContext())
+            //ViewModel = new List<User>();
+            //using (var db = new ApplicationDbContext())
+            //{
+            //    var usersList = db.Users.ToList();
+            //    //UsersComboBox.DataContext = usersList;
+            //    ViewModel = usersList;
+            //}
+        }
+
+        private void NavView_Loaded(object sender, RoutedEventArgs e)
+        {
+            // you can also add items in code behind
+            NavView.MenuItems.Add(new NavigationViewItemSeparator());
+            //NavView.MenuItems.Add(new NavigationViewItem()
+            //{ Content = "My content", Icon = new SymbolIcon(Symbol.Folder), Tag = "content" });
+
+            // set the initial SelectedItem 
+            foreach (NavigationViewItemBase item in NavView.MenuItems)
             {
-                var usersList = db.Users.ToList();
-                //UsersComboBox.DataContext = usersList;
-                ViewModel = usersList;
+                if (item is NavigationViewItem && item.Tag.ToString() == "UserManagement")
+                {
+                    NavView.SelectedItem = item;
+                    break;
+                }
             }
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
+        private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
-            //myButton.Content = "Clicked";
+            if (args.IsSettingsInvoked)
+            {
+                ContentFrame.Navigate(typeof(UserManagement));
+            }
+            else
+            {
+                // find NavigationViewItem with Content that equals InvokedItem
+                var item = sender.MenuItems.OfType<NavigationViewItem>().First(x => (string)x.Content == (string)args.InvokedItem);
+                NavView_Navigate(item as NavigationViewItem);
+            }
         }
 
-        private void AddUser_Click(object sender, RoutedEventArgs e)
+        private void NavView_Navigate(NavigationViewItem item)
         {
-            frame.Navigate(typeof(AddUser));
-        }
+            switch (item.Tag)
+            {
+                case "UserManagement":
+                    ContentFrame.Navigate(typeof(UserManagement));
+                    break;
 
-        private void UserComboBox_SelectionChanged(object sender, RoutedEventArgs e)
-        {
+                case "Trade":
+                    ContentFrame.Navigate(typeof(TradeStocks));
+                    break;
 
+                case "games":
+                    ContentFrame.Navigate(typeof(UserManagement));
+                    break;
+
+                case "music":
+                    ContentFrame.Navigate(typeof(UserManagement));
+                    break;
+
+                case "content":
+                    ContentFrame.Navigate(typeof(UserManagement));
+                    break;
+            }
         }
 
     }

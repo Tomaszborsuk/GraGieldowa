@@ -7,13 +7,15 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
+    <!--<Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <!--<Button x:Name="myButton" Click="myButton_Click">Click Me</Button>-->
+            -->
+    <!--<Button x:Name="myButton" Click="myButton_Click">Click Me</Button>-->
+    <!--
             <Button Background="White" x:Name="AddUserButton" Content="Dodaj nowego użytkownika" Click="AddUser_Click" />
 
             <ComboBox Background="White" x:Name="UsersComboBox" SelectionChanged="UserComboBox_SelectionChanged" Header="Użytkownicy" PlaceholderText="Wybierz użytkownika" Width="200">
@@ -28,5 +30,60 @@
                 x:Name="frame"
                 VerticalAlignment="Center"
                />
-    </Grid>
+    </Grid>-->
+    <NavigationView x:Name="NavView"
+                    ItemInvoked="NavView_ItemInvoked"
+                    Loaded="NavView_Loaded">
+        <NavigationView.MenuItems>
+            <NavigationViewItemHeader Content="Zarządzanie użytkownikami"/>
+            <NavigationViewItem Content="Użytkownicy" Tag="UserManagement" x:Name="UserManagement" >
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="OtherUser"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItemHeader Content="Zarządzanie portelem"/>
+            <NavigationViewItem Content="Kup/Sprzedaj" Tag="Trade" x:Name="Trade">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="Home"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem Content="Portfel" Tag="CurrentInvestments" x:Name="CurrentInvestments">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="Home"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+            <NavigationViewItem Content="Historia operacji" Tag="HistoricalOperations" x:Name="HistoricalOperations">
+                <NavigationViewItem.Icon>
+                    <SymbolIcon Symbol="Account"/>
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
+        </NavigationView.MenuItems>
+
+
+
+        <!--<NavigationView.PaneCustomContent>
+            <HyperlinkButton x:Name="PaneHyperlink" Content="More info" Margin="12,0" Visibility="Collapsed" />
+        </NavigationView.PaneCustomContent>-->
+
+        <!--<NavigationView.AutoSuggestBox>
+            <AutoSuggestBox QueryIcon="Find" AutomationProperties.Name="Search"/>
+        </NavigationView.AutoSuggestBox>-->
+
+        <!--<NavigationView.PaneFooter>
+            <StackPanel x:Name="FooterStackPanel" Orientation="Vertical" Visibility="Collapsed">
+                <NavigationViewItem Icon="Download" AutomationProperties.Name="download"/>
+                <NavigationViewItem Icon="Favorite" AutomationProperties.Name="favorite"/>
+            </StackPanel>
+        </NavigationView.PaneFooter>-->
+
+        <Frame x:Name="ContentFrame" Margin="24">
+            <Frame.ContentTransitions>
+                <TransitionCollection>
+                    <NavigationThemeTransition/>
+                </TransitionCollection>
+            </Frame.ContentTransitions>
+        </Frame>
+
+    </NavigationView>
+    <!--<Frame x:Name="frame"/>-->
 </Window>

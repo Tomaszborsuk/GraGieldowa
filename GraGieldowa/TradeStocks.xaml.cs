@@ -1,4 +1,6 @@
 ﻿using GraGieldowa.Data;
+using GraGieldowa.Model;
+using GraGieldowa.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -11,6 +13,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.ApplicationModel.Contacts.DataProvider;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using xAPI.Commands;
@@ -34,6 +37,8 @@ namespace GraGieldowa
         public TradeStocks()
         {
             this.InitializeComponent();
+            ViewModel = new TradeStockViewModel();
+
             using var db = new ApplicationDbContext();
             string password = db.Configs.Where(x => x.Key == "Password").Select(x => x.Value).FirstOrDefault();
 
@@ -58,8 +63,101 @@ namespace GraGieldowa
             Console.WriteLine("All symbols count: " + allSymbolsResponse.SymbolRecords.Count);
 
             var polishSymbols = allSymbolsResponse.SymbolRecords.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC").ToList();
+            foreach (var symbol in polishSymbols)
+            {
+                var stockModel = new StockViewModel
+                {
+                    Symbol = symbol.Symbol,
+                    BuyPrice = symbol.Bid.ToString(),
+                    Name = symbol.Description
+                };
+                ViewModel.Stocks.Add(stockModel);
+            }
 
-            //Console.Read();
+            var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
+            var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
+
+            var userModel = new UserViewModel
+            {
+                UserName = currentUser.UserName,
+                Id = currentUser.Id,
+                AccountBalance = currentUser.AccountBalance.ToString()
+            };
+            ViewModel.CurrentUser = userModel;
+        }
+
+        public TradeStockViewModel ViewModel { get; }
+
+        private void BuyStockButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                ErrorText.Text = "";
+                var openPositionModel = new OpenPosition();
+
+                var db = new ApplicationDbContext();
+                var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
+                var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
+                int userId;
+                if (int.TryParse(currentUserId, out userId))
+                {
+                    openPositionModel.UserId = userId;
+                }
+                else
+                {
+                    ErrorText.Text = "Wystąpił błąd z wczytaniem użytkownika";
+                }
+
+                openPositionModel.StockName = SelectedStockName.Text;
+                openPositionModel.Symbol = SelectedStockSymbol.Text;
+
+                decimal stockPrice;
+                if (Decimal.TryParse(SelectedStockPrice.Text, out stockPrice))
+                {
+                    openPositionModel.Price = stockPrice;
+                }
+                else
+                {
+                    ErrorText.Text = "Wystąpił błąd z ceną akcji";
+                }
+
+                int noOfStocks;
+                if (int.TryParse(SelectedNumberOfStocks.Text, out noOfStocks))
+                {
+                    openPositionModel.Amount = noOfStocks;
+                }
+                else
+                {
+                    ErrorText.Text = "Wystąpił błąd z liczbą akcji do kupienia";
+                }
+
+                openPositionModel.OpenDate = DateTime.Now;
+                var buyPrice = noOfStocks * stockPrice;
+
+                if (buyPrice > currentUser.AccountBalance)
+                {
+                    ErrorText.Text = "Nie masz wystarczających środków na zakup takiej ilości akcji";
+                }
+
+                if (ErrorText.Text == "")
+                {
+                    currentUser.AccountBalance -= buyPrice;
+
+                    db.Add(openPositionModel);
+                    db.Update(currentUser);
+                    db.SaveChanges();
+                    BuyStockButton.Content = "Poprawnie zakupiono akcje";
+                    ViewModel.CurrentUser.AccountBalance = currentUser.AccountBalance.ToString();
+                }
+                else
+                {
+                    BuyStockButton.Content = "Kup akcje";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

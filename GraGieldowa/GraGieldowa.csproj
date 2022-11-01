@@ -47,6 +47,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\xAPI25-XTB-net\xAPI25-XTB-net\src\SyncAPIConnector\SyncAPIConnect.csproj" />
     <ProjectReference Include="..\GraGieldowa.Model\GraGieldowa.Model.csproj" />
+    <ProjectReference Include="..\GraGieldowa.ViewModels\GraGieldowa.ViewModels.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Page Update="TradeStocks.xaml">

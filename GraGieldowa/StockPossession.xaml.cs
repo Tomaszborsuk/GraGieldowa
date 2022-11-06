@@ -1,6 +1,7 @@
 ﻿using GraGieldowa.Data;
 using GraGieldowa.Model;
 using GraGieldowa.ViewModels;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -97,6 +98,7 @@ namespace GraGieldowa
             try
             {
                 ErrorText.Text = "";
+                ErrorText.Foreground = new SolidColorBrush(Colors.Red);
                 if (!String.IsNullOrEmpty(ViewModel.SelectedOpenStock.StockName))
                 {
                     var closedPositionModel = new ClosedPosition();
@@ -178,6 +180,7 @@ namespace GraGieldowa
                         db.Update(currentUser);
                         db.SaveChanges();
                         ErrorText.Text = "Poprawnie sprzedano akcje akcje";
+                        ErrorText.Foreground = new SolidColorBrush(Colors.Green);
                         ViewModel.CurrentUser.AccountBalance = currentUser.AccountBalance.ToString();
                     }
                     else

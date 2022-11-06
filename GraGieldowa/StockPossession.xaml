@@ -72,7 +72,7 @@
                      Margin="10"
                      x:Name="SelectedNumberOfStocksToSell"/>
 
-            <TextBlock x:Name="ErrorText" FontSize="18" Foreground="Red"/>
+            <TextBlock x:Name="ErrorText" Margin="10" FontSize="18" Foreground="Red"/>
 
             <Button Background="OrangeRed" Margin="10" x:Name="SellStockButton" Content="Sprzedaj akcje" Click="SellStockButton_Click"/>
 

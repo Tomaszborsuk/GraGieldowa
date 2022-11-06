@@ -98,8 +98,8 @@ namespace GraGieldowa
                 if (ViewModel.SelectedStock != null)
                 {
                     var openPositionModel = new OpenPosition();
-
                     var db = new ApplicationDbContext();
+
                     var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
                     var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
                     int userId;
@@ -143,11 +143,22 @@ namespace GraGieldowa
                         ErrorText.Text = "Nie masz wystarczających środków na zakup takiej ilości akcji";
                     }
 
+                    bool ifAlreadyOwnedStock = db.OpenPositions.Any(x => x.Symbol == ViewModel.SelectedStock.Symbol && x.UserId == userId);
+                    if(ifAlreadyOwnedStock)
+                    {
+                        var currentOpenPosition = db.OpenPositions.Where(x => x.Symbol == ViewModel.SelectedStock.Symbol && x.UserId == userId).FirstOrDefault();
+                        var totalCost = buyPrice + (currentOpenPosition.Price * currentOpenPosition.Amount);
+                        currentOpenPosition.Amount += noOfStocks;
+                        currentOpenPosition.Price = Math.Round(totalCost / currentOpenPosition.Amount, 2);
+                        db.Update(currentOpenPosition);
+                    }
+
                     if (ErrorText.Text == "")
                     {
                         currentUser.AccountBalance -= buyPrice;
 
-                        db.Add(openPositionModel);
+                        if (!ifAlreadyOwnedStock)
+                            db.Add(openPositionModel);
                         db.Update(currentUser);
                         db.SaveChanges();
                         ErrorText.Foreground = new SolidColorBrush(Colors.Green);

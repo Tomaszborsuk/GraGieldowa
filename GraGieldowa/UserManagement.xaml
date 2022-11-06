@@ -7,12 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    x:Name="UsersPage"
-    NavigationCacheMode="Enabled">
+    x:Name="UsersPage">
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400"/>
+            <ColumnDefinition Width="300"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
@@ -40,8 +39,6 @@
             </StackPanel>
 
             <StackPanel Background="White" BorderBrush="Gray" BorderThickness="1">
-                <TextBlock  Text="Wybrany użytkownik"
-                            Margin="10"/>
                 <TextBox    Margin="10"
                             Text="{x:Bind ViewModel.SelectedUser.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Header="Nazwa użytkownika"
@@ -53,8 +50,8 @@
 
                 <TextBlock x:Name="ErrorText" Margin="10" FontSize="18" Foreground="Red"/>
 
-               <Button Background="DarkSeaGreen" x:Name="EditUserButton" Content="Zaktualizuj i wybierz zalogowanego użytkownika" Click="EditUserButton_Click" Margin="10 10 0 10"/>
-               <Button Background="Red" x:Name="DeleteUserButton" Content="Usuń wybranego użytkownika" Click="DeleteUserButton_Click" Margin="10 10 0 10"/>
+                <Button Background="DarkSeaGreen" x:Name="EditUserButton" Content="Zaktualizuj i wybierz zalogowanego użytkownika" Click="EditUserButton_Click" Margin="10 10 0 10"/>
+                <Button Background="Red" x:Name="DeleteUserButton" Content="Usuń wybranego użytkownika" Click="DeleteUserButton_Click" Margin="10 10 0 10"/>
             </StackPanel>
 
             <StackPanel Background="White" Margin="0 10 0 0" Padding="5" x:Name="UserStackPanel" BorderBrush="Gray" BorderThickness="1">
@@ -71,36 +68,6 @@
                 <Button Background="DarkSeaGreen" x:Name="AddUserButton" Content="Dodaj nowego użytkownika" Click="AddUserDetails_Click" Margin="0 10 0 0"/>
 
             </StackPanel>
-
-            <!--<Button Background="White" x:Name="AddUserButton" Content="Dodaj nowego użytkownika" Click="AddUser_Click" Margin="0 10 0 0"/>
-
-            <Frame x:Name="LocalFrame" Margin="24" Background="White">
-                <Frame.ContentTransitions>
-                    <TransitionCollection>
-                        <NavigationThemeTransition/>
-                    </TransitionCollection>
-                </Frame.ContentTransitions>
-            </Frame>-->
         </StackPanel>
-
     </Grid>
-    <!--<StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10">
-
-        <StackPanel>
-            <TextBlock Text="{x:Bind CurrentUser.UserName}"/>
-            <TextBlock Text="{x:Bind CurrentUser.AccountBalance}"/>
-        </StackPanel>
-
-        <ComboBox Background="White" x:Name="UsersComboBox" SelectionChanged="UserComboBox_SelectionChanged" Header="Użytkownicy" PlaceholderText="Wybierz użytkownika" Width="200">
-            <ListView ItemsSource="{x:Bind ViewModel, Mode=OneWay}"
-                      DisplayMemberPath="UserName"
-                      SelectionChanged="UserComboBox_SelectionChanged"
-                      x:Name="ListViewUsers"
-                      SelectionMode="Single"
-                          />
-        </ComboBox>
-
-        
-
-    </StackPanel>-->
 </Page>

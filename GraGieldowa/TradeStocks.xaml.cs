@@ -1,6 +1,7 @@
 ﻿using GraGieldowa.Data;
 using GraGieldowa.Model;
 using GraGieldowa.ViewModels;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -93,65 +94,70 @@ namespace GraGieldowa
             try
             {
                 ErrorText.Text = "";
-                var openPositionModel = new OpenPosition();
-
-                var db = new ApplicationDbContext();
-                var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
-                var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
-                int userId;
-                if (int.TryParse(currentUserId, out userId))
+                ErrorText.Foreground = new SolidColorBrush(Colors.Red);
+                if (ViewModel.SelectedStock != null)
                 {
-                    openPositionModel.UserId = userId;
+                    var openPositionModel = new OpenPosition();
+
+                    var db = new ApplicationDbContext();
+                    var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
+                    var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
+                    int userId;
+                    if (int.TryParse(currentUserId, out userId))
+                    {
+                        openPositionModel.UserId = userId;
+                    }
+                    else
+                    {
+                        ErrorText.Text = "Wystąpił błąd z wczytaniem użytkownika";
+                    }
+
+                    openPositionModel.StockName = ViewModel.SelectedStock.Name;
+                    openPositionModel.Symbol = ViewModel.SelectedStock.Symbol;
+
+                    decimal stockPrice;
+                    if (Decimal.TryParse(SelectedStockPrice.Text, out stockPrice))
+                    {
+                        openPositionModel.Price = stockPrice;
+                    }
+                    else
+                    {
+                        ErrorText.Text = "Wystąpił błąd z ceną akcji";
+                    }
+
+                    int noOfStocks;
+                    if (int.TryParse(SelectedNumberOfStocks.Text, out noOfStocks))
+                    {
+                        openPositionModel.Amount = noOfStocks;
+                    }
+                    else
+                    {
+                        ErrorText.Text = "Wystąpił błąd z liczbą akcji do kupienia";
+                    }
+
+                    openPositionModel.OpenDate = DateTime.Now;
+                    var buyPrice = noOfStocks * stockPrice;
+
+                    if (buyPrice > currentUser.AccountBalance)
+                    {
+                        ErrorText.Text = "Nie masz wystarczających środków na zakup takiej ilości akcji";
+                    }
+
+                    if (ErrorText.Text == "")
+                    {
+                        currentUser.AccountBalance -= buyPrice;
+
+                        db.Add(openPositionModel);
+                        db.Update(currentUser);
+                        db.SaveChanges();
+                        ErrorText.Foreground = new SolidColorBrush(Colors.Green);
+                        ErrorText.Text = "Poprawnie zakupiono akcje";
+                        ViewModel.CurrentUser.AccountBalance = currentUser.AccountBalance.ToString();
+                    }
                 }
                 else
                 {
-                    ErrorText.Text = "Wystąpił błąd z wczytaniem użytkownika";
-                }
-
-                openPositionModel.StockName = SelectedStockName.Text;
-                openPositionModel.Symbol = SelectedStockSymbol.Text;
-
-                decimal stockPrice;
-                if (Decimal.TryParse(SelectedStockPrice.Text, out stockPrice))
-                {
-                    openPositionModel.Price = stockPrice;
-                }
-                else
-                {
-                    ErrorText.Text = "Wystąpił błąd z ceną akcji";
-                }
-
-                int noOfStocks;
-                if (int.TryParse(SelectedNumberOfStocks.Text, out noOfStocks))
-                {
-                    openPositionModel.Amount = noOfStocks;
-                }
-                else
-                {
-                    ErrorText.Text = "Wystąpił błąd z liczbą akcji do kupienia";
-                }
-
-                openPositionModel.OpenDate = DateTime.Now;
-                var buyPrice = noOfStocks * stockPrice;
-
-                if (buyPrice > currentUser.AccountBalance)
-                {
-                    ErrorText.Text = "Nie masz wystarczających środków na zakup takiej ilości akcji";
-                }
-
-                if (ErrorText.Text == "")
-                {
-                    currentUser.AccountBalance -= buyPrice;
-
-                    db.Add(openPositionModel);
-                    db.Update(currentUser);
-                    db.SaveChanges();
-                    BuyStockButton.Content = "Poprawnie zakupiono akcje";
-                    ViewModel.CurrentUser.AccountBalance = currentUser.AccountBalance.ToString();
-                }
-                else
-                {
-                    BuyStockButton.Content = "Kup akcje";
+                    ErrorText.Text = "Musisz wybrać akcję do kupienia";
                 }
             }
             catch (Exception ex)

@@ -48,21 +48,21 @@ namespace GraGieldowa
             //{ Content = "My content", Icon = new SymbolIcon(Symbol.Folder), Tag = "content" });
 
             // set the initial SelectedItem 
-            foreach (NavigationViewItemBase item in NavView.MenuItems)
-            {
-                if (item is NavigationViewItem && item.Tag.ToString() == "UserManagement")
-                {
-                    NavView.SelectedItem = item;
-                    break;
-                }
-            }
+            //foreach (NavigationViewItemBase item in NavView.MenuItems)
+            //{
+            //    if (item is NavigationViewItem && item.Tag.ToString() == "HistoricalOperations")
+            //    {
+            //        NavView.SelectedItem = item;
+            //        break;
+            //    }
+            //}
         }
 
         private void NavView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked)
             {
-                ContentFrame.Navigate(typeof(UserManagement));
+                ContentFrame.Navigate(typeof(StockPositionHistory));
             }
             else
             {
@@ -76,10 +76,6 @@ namespace GraGieldowa
         {
             switch (item.Tag)
             {
-                case "UserManagement":
-                    ContentFrame.Navigate(typeof(UserManagement));
-                    break;
-
                 case "Trade":
                     ContentFrame.Navigate(typeof(TradeStocks));
                     break;
@@ -92,7 +88,7 @@ namespace GraGieldowa
                     ContentFrame.Navigate(typeof(StockPositionHistory));
                     break;
 
-                case "content":
+                case "UserManagement":
                     ContentFrame.Navigate(typeof(UserManagement));
                     break;
             }

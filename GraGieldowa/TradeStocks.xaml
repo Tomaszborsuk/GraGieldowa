@@ -16,9 +16,11 @@
 
         <ListView ItemsSource="{x:Bind ViewModel.Stocks, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedStock, Mode=TwoWay}"
-                  DisplayMemberPath="Name"/>
-
-        <StackPanel Grid.Column="1">
+                  DisplayMemberPath="Name" 
+                  BorderBrush="Gray"
+                  BorderThickness="2"/>
+        
+        <StackPanel Grid.Column="1" Background="White">
             <StackPanel Background="LightCyan">
                 <TextBlock Text="Dane użytkownika"
                            Margin="10"/>
@@ -31,23 +33,30 @@
             </StackPanel>
 
             <TextBlock  Margin="10"
-                        Text="{x:Bind ViewModel.SelectedStock.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        x:Name="SelectedStockName"/>
+                        x:Name="SelectedStockName">
+                        <Run>Nazwa akcji: </Run>
+                        <Run Text="{x:Bind ViewModel.SelectedStock.Name, Mode=OneWay}" />
+            </TextBlock>
             <TextBlock  Margin="10"
                         Text="{x:Bind ViewModel.SelectedStock.Symbol, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        x:Name="SelectedStockSymbol"/>
+                        x:Name="SelectedStockSymbol">
+                        <Run>Nazwa użytkownika: </Run>
+                        <Run Text="{x:Bind ViewModel.SelectedStock.Symbol, Mode=OneWay}" />
+            </TextBlock>
             <TextBlock  Margin="10"
                         Text="{x:Bind ViewModel.SelectedStock.BuyPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        x:Name="SelectedStockPrice"/>
+                        x:Name="SelectedStockPrice">
+                        <Run>Nazwa użytkownika: </Run>
+                        <Run Text="{x:Bind ViewModel.SelectedStock.BuyPrice, Mode=OneWay}" />
+            </TextBlock>
 
-            <TextBox Header="Ilość sztuk"
+            <TextBox Header="Ilość sztuk do kupienia"
                      Margin="10"
                      x:Name="SelectedNumberOfStocks"/>
 
-            <TextBlock x:Name="ErrorText" FontSize="18" Foreground="Red"/>
+            <TextBlock x:Name="ErrorText" Margin="10" FontSize="18" Foreground="Red"/>
 
-            <Button Background="White" x:Name="BuyStockButton" Content="Kup akcje" Click="BuyStockButton_Click"/>
-
+            <Button Background="DarkSeaGreen" Margin="10" x:Name="BuyStockButton" Content="Kup akcje" Click="BuyStockButton_Click"/>
         </StackPanel>
     </Grid>
 </Page>

@@ -44,12 +44,12 @@
             <NavigationViewItemHeader Content="Zarządzanie portelem"/>
             <NavigationViewItem Content="Kup" Tag="Trade" x:Name="Trade">
                 <NavigationViewItem.Icon>
-                    <SymbolIcon Symbol="Home"/>
+                    <SymbolIcon Symbol="Shop"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItem Content="Portfel" Tag="Possession" x:Name="Possession">
                 <NavigationViewItem.Icon>
-                    <SymbolIcon Symbol="Account"/>
+                    <SymbolIcon Symbol="Manage"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItem Content="Historia operacji" Tag="HistoricalOperations" x:Name="HistoricalOperations">
@@ -85,5 +85,4 @@
         </Frame>
 
     </NavigationView>
-    <!--<Frame x:Name="frame"/>-->
 </Window>

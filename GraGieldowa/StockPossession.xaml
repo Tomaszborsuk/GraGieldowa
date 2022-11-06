@@ -16,9 +16,11 @@
 
         <ListView ItemsSource="{x:Bind ViewModel.OpenStocks, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedOpenStock, Mode=TwoWay}"
-                  DisplayMemberPath="StockName"/>
+                  DisplayMemberPath="StockName"
+                  BorderBrush="Gray"
+                  BorderThickness="2"/>
 
-        <StackPanel Grid.Column="1">
+        <StackPanel Grid.Column="1" Background="White">
             <StackPanel Background="LightCyan">
                 <TextBlock Text="Dane użytkownika"
                            Margin="10"/>
@@ -72,7 +74,7 @@
 
             <TextBlock x:Name="ErrorText" FontSize="18" Foreground="Red"/>
 
-            <Button Background="White" Margin="10" x:Name="SellStockButton" Content="Sprzedaj akcje" Click="SellStockButton_Click"/>
+            <Button Background="OrangeRed" Margin="10" x:Name="SellStockButton" Content="Sprzedaj akcje" Click="SellStockButton_Click"/>
 
         </StackPanel>
     </Grid>

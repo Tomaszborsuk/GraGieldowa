@@ -99,7 +99,7 @@ namespace GraGieldowa
             {
                 ErrorText.Text = "";
                 ErrorText.Foreground = new SolidColorBrush(Colors.Red);
-                if (!String.IsNullOrEmpty(ViewModel.SelectedOpenStock.StockName))
+                if (ViewModel.SelectedOpenStock != null)
                 {
                     var closedPositionModel = new ClosedPosition();
 
@@ -182,10 +182,6 @@ namespace GraGieldowa
                         ErrorText.Text = "Poprawnie sprzedano akcje akcje";
                         ErrorText.Foreground = new SolidColorBrush(Colors.Green);
                         ViewModel.CurrentUser.AccountBalance = currentUser.AccountBalance.ToString();
-                    }
-                    else
-                    {
-                        SellStockButton.Content = "Sprzedaj akcje";
                     }
                 }
                 else

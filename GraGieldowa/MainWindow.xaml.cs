@@ -84,8 +84,8 @@ namespace GraGieldowa
                     ContentFrame.Navigate(typeof(TradeStocks));
                     break;
 
-                case "games":
-                    ContentFrame.Navigate(typeof(UserManagement));
+                case "Possession":
+                    ContentFrame.Navigate(typeof(StockPossession));
                     break;
 
                 case "music":

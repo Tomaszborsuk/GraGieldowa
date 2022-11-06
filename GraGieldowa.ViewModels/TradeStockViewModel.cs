@@ -15,7 +15,6 @@ namespace GraGieldowa.ViewModels
             
         }
         public ObservableCollection<StockViewModel> Stocks { get; } = new();
-        public UserViewModel User { get; set; } = new();
     }
 
     [ViewModel]

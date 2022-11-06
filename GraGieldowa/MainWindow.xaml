@@ -42,14 +42,14 @@
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItemHeader Content="Zarządzanie portelem"/>
-            <NavigationViewItem Content="Kup/Sprzedaj" Tag="Trade" x:Name="Trade">
+            <NavigationViewItem Content="Kup" Tag="Trade" x:Name="Trade">
                 <NavigationViewItem.Icon>
                     <SymbolIcon Symbol="Home"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
-            <NavigationViewItem Content="Portfel" Tag="CurrentInvestments" x:Name="CurrentInvestments">
+            <NavigationViewItem Content="Portfel" Tag="Possession" x:Name="Possession">
                 <NavigationViewItem.Icon>
-                    <SymbolIcon Symbol="Home"/>
+                    <SymbolIcon Symbol="Account"/>
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItem Content="Historia operacji" Tag="HistoricalOperations" x:Name="HistoricalOperations">

@@ -37,54 +37,63 @@ namespace GraGieldowa
 
         public TradeStocks()
         {
-            this.InitializeComponent();
-            ViewModel = new TradeStockViewModel();
-
-            using var db = new ApplicationDbContext();
-            string password = db.Configs.Where(x => x.Key == "Password").Select(x => x.Value).FirstOrDefault();
-
-            Console.WriteLine("Server address: " + serverData.Address + " port: " + serverData.MainPort + " streaming port: " + serverData.StreamingPort);
-
-            // Connect to server
-            SyncAPIConnector connector = new SyncAPIConnector(serverData);
-            //Console.WriteLine("Connected to the server");
-
-            // Login to server
-            Credentials credentials = new Credentials(userId, password, "", "YOUR APP NAME");
-
-            LoginResponse loginResponse = APICommandFactory.ExecuteLoginCommand(connector, credentials, true);
-            Console.WriteLine("Logged in as: " + userId);
-
-            // Execute GetServerTime command
-            ServerTimeResponse serverTimeResponse = APICommandFactory.ExecuteServerTimeCommand(connector, true);
-            //Console.WriteLine("Server time: " + serverTimeResponse.TimeString);
-
-            // Execute GetAllSymbols command
-            AllSymbolsResponse allSymbolsResponse = APICommandFactory.ExecuteAllSymbolsCommand(connector, true);
-            Console.WriteLine("All symbols count: " + allSymbolsResponse.SymbolRecords.Count);
-
-            var polishSymbols = allSymbolsResponse.SymbolRecords.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC").ToList();
-            foreach (var symbol in polishSymbols)
+            try
             {
-                var stockModel = new StockViewModel
+
+
+                this.InitializeComponent();
+                ViewModel = new TradeStockViewModel();
+
+                using var db = new ApplicationDbContext();
+                string password = db.Configs.Where(x => x.Key == "Password").Select(x => x.Value).FirstOrDefault();
+
+                Console.WriteLine("Server address: " + serverData.Address + " port: " + serverData.MainPort + " streaming port: " + serverData.StreamingPort);
+
+                // Connect to server
+                SyncAPIConnector connector = new SyncAPIConnector(serverData);
+                //Console.WriteLine("Connected to the server");
+
+                // Login to server
+                Credentials credentials = new Credentials(userId, password, "", "YOUR APP NAME");
+
+                LoginResponse loginResponse = APICommandFactory.ExecuteLoginCommand(connector, credentials, true);
+                Console.WriteLine("Logged in as: " + userId);
+
+                // Execute GetServerTime command
+                ServerTimeResponse serverTimeResponse = APICommandFactory.ExecuteServerTimeCommand(connector, true);
+                //Console.WriteLine("Server time: " + serverTimeResponse.TimeString);
+
+                // Execute GetAllSymbols command
+                AllSymbolsResponse allSymbolsResponse = APICommandFactory.ExecuteAllSymbolsCommand(connector, true);
+                Console.WriteLine("All symbols count: " + allSymbolsResponse.SymbolRecords.Count);
+
+                var polishSymbols = allSymbolsResponse.SymbolRecords.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC").ToList();
+                foreach (var symbol in polishSymbols)
                 {
-                    Symbol = symbol.Symbol,
-                    BuyPrice = symbol.Bid.ToString(),
-                    Name = symbol.Description
+                    var stockModel = new StockViewModel
+                    {
+                        Symbol = symbol.Symbol,
+                        BuyPrice = symbol.Bid.ToString(),
+                        Name = symbol.Description
+                    };
+                    ViewModel.Stocks.Add(stockModel);
+                }
+
+                var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
+                var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
+
+                var userModel = new UserViewModel
+                {
+                    UserName = currentUser.UserName,
+                    Id = currentUser.Id,
+                    AccountBalance = currentUser.AccountBalance.ToString()
                 };
-                ViewModel.Stocks.Add(stockModel);
+                ViewModel.CurrentUser = userModel;
             }
-
-            var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
-            var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
-
-            var userModel = new UserViewModel
+            catch (Exception ex)
             {
-                UserName = currentUser.UserName,
-                Id = currentUser.Id,
-                AccountBalance = currentUser.AccountBalance.ToString()
-            };
-            ViewModel.CurrentUser = userModel;
+                ErrorText.Text = "Wystąpił błąd przy pobieraniu cen z API.";
+            }
         }
 
         public TradeStockViewModel ViewModel { get; }
@@ -144,7 +153,7 @@ namespace GraGieldowa
                     }
 
                     bool ifAlreadyOwnedStock = db.OpenPositions.Any(x => x.Symbol == ViewModel.SelectedStock.Symbol && x.UserId == userId);
-                    if(ifAlreadyOwnedStock)
+                    if (ifAlreadyOwnedStock)
                     {
                         var currentOpenPosition = db.OpenPositions.Where(x => x.Symbol == ViewModel.SelectedStock.Symbol && x.UserId == userId).FirstOrDefault();
                         var totalCost = buyPrice + (currentOpenPosition.Price * currentOpenPosition.Amount);

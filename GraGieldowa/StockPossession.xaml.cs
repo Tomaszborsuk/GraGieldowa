@@ -81,8 +81,7 @@ namespace GraGieldowa
             }
             catch (Exception ex)
             {
-
-                throw;
+                ErrorText.Text = "Wystąpił błąd podczas pobierania z API.";
             }
         }
 

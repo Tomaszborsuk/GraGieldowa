@@ -10,15 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <StackPanel>
-        <!--<controls:DataGrid 
-            ItemsSource="{x:Bind ViewModel.HistoryStocks}"
-            BorderBrush="Black"
-            BorderThickness="2">
-            --><!--<controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Symbol akcji" Binding="{x:Bind ViewModel.HistoryStocks}"></controls:DataGridTextColumn>
-            </controls:DataGrid.Columns>--><!--
-        </controls:DataGrid>-->
-        <controls:DataGrid ItemsSource="{x:Bind ViewModel.HistoryStocks}" AutoGenerateColumns="False">
+        <controls:DataGrid ItemsSource="{x:Bind ViewModel.HistoryStocks}" AutoGenerateColumns="False" IsReadOnly="True">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol akcji"></controls:DataGridTextColumn>
                 <controls:DataGridTextColumn Binding="{Binding StockName}" Header="Nazwa akcji"></controls:DataGridTextColumn>

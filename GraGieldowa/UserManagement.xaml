@@ -63,6 +63,14 @@
                          PlaceholderText="Podaj saldo początkowe [zł] dla nowego użytkownika"
                           x:Name="CurrentBalance"/>
 
+                <TextBox Header="Id użytkownika w serwisie XTBDemo"
+                         PlaceholderText="XTBDemo Id"
+                          x:Name="XTBUserId"/>
+
+                <TextBox Header="Hasło do serwisu XTBDemo"
+                         PlaceholderText="XTBDemo hasło"
+                          x:Name="XTBPassword"/>
+
                 <TextBlock x:Name="ErrorTextNewUser" Margin="10" FontSize="18" Foreground="Red"/>
 
                 <Button Background="DarkSeaGreen" x:Name="AddUserButton" Content="Dodaj nowego użytkownika" Click="AddUserDetails_Click" Margin="0 10 0 0"/>

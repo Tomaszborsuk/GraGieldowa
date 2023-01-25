@@ -13,14 +13,27 @@
             <ColumnDefinition Width="250"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
 
+        
+        <TextBox Header="Wyszukaj interesujące cię akcje"
+                 x:Name="SearchStock"
+                 TextChanged="SearchStock_TextChanged"
+                 Grid.Row="0">
+        </TextBox>
+        
         <ListView ItemsSource="{x:Bind ViewModel.Stocks, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedStock, Mode=TwoWay}"
                   DisplayMemberPath="Name" 
                   BorderBrush="Gray"
-                  BorderThickness="2"/>
+                  BorderThickness="2"
+                  Margin="0 10 0 0"
+                  Grid.Row="1"/>
         
-        <StackPanel Grid.Column="1" Background="White">
+        <StackPanel Grid.Column="1" Background="White" Grid.RowSpan="2">
             <StackPanel Background="LightCyan">
                 <TextBlock Text="Dane użytkownika"
                            Margin="10"/>

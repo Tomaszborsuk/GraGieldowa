@@ -159,6 +159,20 @@ namespace GraGieldowa
                     ErrorTextNewUser.Text = "Podaj poprawne saldo początkowe";
                 }
 
+                if (!String.IsNullOrEmpty(XTBUserId.Text))
+                    newUser.XTBUserId = XTBUserId.Text;
+                else
+                {
+                    ErrorTextNewUser.Text = "Podaj Id do serwisu XTB";
+                }
+
+                if (!String.IsNullOrEmpty(XTBPassword.Text))
+                    newUser.XTBPassword = XTBPassword.Text;
+                else
+                {
+                    ErrorTextNewUser.Text = "Podaj hasło do serwisu XTB";
+                }
+
                 if (ErrorTextNewUser.Text == "")
                 {
                     db.Add(newUser);

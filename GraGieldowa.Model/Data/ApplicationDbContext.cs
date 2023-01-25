@@ -18,7 +18,9 @@ namespace GraGieldowa.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Data Source=C:\\Users\\user\\Desktop\\Informatyka\\GraGieldowa\\GraGieldowa.Model\\Gra.db");
+            var dataSource = Path.Combine(System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Gra.db");
+            //optionsBuilder.UseSqlite($"Data Source=C:\\Users\\user\\Desktop\\Informatyka\\GraGieldowa\\GraGieldowa.Model\\Gra.db");
+            optionsBuilder.UseSqlite($"Data Source={dataSource}");
             base.OnConfiguring(optionsBuilder);
         }
     }

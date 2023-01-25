@@ -33,7 +33,7 @@ namespace GraGieldowa
     public sealed partial class StockPossession : Page
     {
         private static Server serverData = Servers.DEMO;
-        private static string userId = "11763324";
+        //private static string userId = "11763324";
 
         public StockPossession()
         {
@@ -45,7 +45,8 @@ namespace GraGieldowa
                 using var db = new ApplicationDbContext();
                 var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
                 var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
-                string password = db.Configs.Where(x => x.Key == "Password").Select(x => x.Value).FirstOrDefault();
+                string userId = currentUser.XTBUserId;
+                string password = currentUser.XTBPassword;
 
                 SyncAPIConnector connector = new SyncAPIConnector(serverData);
                 Credentials credentials = new Credentials(userId, password, "", "YOUR APP NAME");

@@ -33,19 +33,19 @@ namespace GraGieldowa
     public sealed partial class TradeStocks : Page
     {
         private static Server serverData = Servers.DEMO;
-        private static string userId = "11763324";
 
         public TradeStocks()
         {
             try
             {
-
-
                 this.InitializeComponent();
                 ViewModel = new TradeStockViewModel();
 
                 using var db = new ApplicationDbContext();
-                string password = db.Configs.Where(x => x.Key == "Password").Select(x => x.Value).FirstOrDefault();
+                var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
+                var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
+                string userId = currentUser.XTBUserId;
+                string password = currentUser.XTBPassword;
 
                 Console.WriteLine("Server address: " + serverData.Address + " port: " + serverData.MainPort + " streaming port: " + serverData.StreamingPort);
 
@@ -73,14 +73,12 @@ namespace GraGieldowa
                     var stockModel = new StockViewModel
                     {
                         Symbol = symbol.Symbol,
-                        BuyPrice = symbol.Bid.ToString(),
+                        BuyPrice = symbol.Ask.ToString(),
                         Name = symbol.Description
                     };
                     ViewModel.Stocks.Add(stockModel);
+                    ViewModel.AllPolishStocks.Add(stockModel);
                 }
-
-                var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
-                var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
 
                 var userModel = new UserViewModel
                 {
@@ -95,7 +93,7 @@ namespace GraGieldowa
                 ErrorText.Text = "Wystąpił błąd przy pobieraniu cen z API.";
             }
         }
-
+        
         public TradeStockViewModel ViewModel { get; }
 
         private void BuyStockButton_Click(object sender, RoutedEventArgs e)
@@ -183,6 +181,19 @@ namespace GraGieldowa
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        private void SearchStock_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ViewModel.Stocks.Clear();
+            var key = SearchStock.Text;
+            foreach (var stock in ViewModel.AllPolishStocks)
+            {
+                if(stock.Name.Contains(key) || stock.Symbol.Contains(key))
+                {
+                    ViewModel.Stocks.Add(stock);
+                }
             }
         }
     }

@@ -44,14 +44,7 @@ namespace GraGieldowa
             this.InitializeComponent();
             using (var db = new ApplicationDbContext())
             {
-                //db.Database.EnsureCreated();
-                //db.Database.Migrate();
-                //var users = db.Users.ToList();
-                //var user = new User();
-                //user.UserName = "Tomasz";
-                //user.AccountBalance = 1000;
-                //db.Add(user);
-                //db.SaveChanges();
+                db.Database.EnsureCreated();
             }
         }
 

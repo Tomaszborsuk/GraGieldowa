@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:GraGieldowa"
+    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -10,15 +11,29 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <ListView ItemsSource="{x:Bind ViewModel.OpenStocks, Mode=OneWay}"
+        <controls:DataGrid ItemsSource="{x:Bind ViewModel.OpenStocks, Mode=OneWay}"
+                           AutoGenerateColumns="False"
+                           IsReadOnly="True"
+                           SelectedItem="{x:Bind ViewModel.SelectedOpenStock, Mode=TwoWay}">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Binding="{Binding Symbol}" Header="Symbol akcji"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Binding="{Binding StockName}" Header="Nazwa akcji"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Binding="{Binding Amount}" Header="Liczba akcji"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Binding="{Binding BuyPrice}" Header="Cena zakupu"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Binding="{Binding PercentChange}" Header="Procent zysku"></controls:DataGridTextColumn>
+                <controls:DataGridTextColumn Binding="{Binding OpenDateTime}" Header="Data zakupu"></controls:DataGridTextColumn>
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+        
+        <!--<ListView ItemsSource="{x:Bind ViewModel.OpenStocks, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedOpenStock, Mode=TwoWay}"
                   DisplayMemberPath="StockName"
                   BorderBrush="Gray"
-                  BorderThickness="2"/>
+                  BorderThickness="2"/>-->
 
         <StackPanel Grid.Column="1" Background="White">
             <StackPanel Background="LightCyan">

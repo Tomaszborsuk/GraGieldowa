@@ -35,7 +35,7 @@
             </NavigationViewItem>
         </NavigationView.MenuItems>
 
-        <Frame x:Name="ContentFrame" Margin="24">
+        <Frame x:Name="ContentFrame" Margin="10">
             <Frame.ContentTransitions>
                 <TransitionCollection>
                     <NavigationThemeTransition/>

@@ -69,8 +69,9 @@ namespace GraGieldowa
                     // Execute GetAllSymbols command
                     AllSymbolsResponse allSymbolsResponse = APICommandFactory.ExecuteAllSymbolsCommand(connector, true);
                     Console.WriteLine("All symbols count: " + allSymbolsResponse.SymbolRecords.Count);
-
-                    var polishSymbols = allSymbolsResponse.SymbolRecords.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC").ToList();
+                    
+                    var polishSymbols = allSymbolsResponse.SymbolRecords.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC" && x.MarginMode.Code == 104).ToList();
+                    var enea = allSymbolsResponse.SymbolRecords.Where(x => x.Description.ToLower().Contains("enea")).ToList();
                     foreach (var symbol in polishSymbols)
                     {
                         var stockModel = new StockViewModel
@@ -195,10 +196,10 @@ namespace GraGieldowa
         private void SearchStock_TextChanged(object sender, TextChangedEventArgs e)
         {
             ViewModel.Stocks.Clear();
-            var key = SearchStock.Text;
+            var key = SearchStock.Text.ToLower();
             foreach (var stock in ViewModel.AllPolishStocks)
             {
-                if (stock.Name.Contains(key) || stock.Symbol.Contains(key))
+                if (stock.Name.ToLower().Contains(key) || stock.Symbol.ToLower().Contains(key))
                 {
                     ViewModel.Stocks.Add(stock);
                 }

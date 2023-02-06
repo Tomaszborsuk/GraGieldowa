@@ -28,69 +28,70 @@
                 <controls:DataGridTextColumn Binding="{Binding OpenDateTime}" Header="Data zakupu"></controls:DataGridTextColumn>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        
+
         <!--<ListView ItemsSource="{x:Bind ViewModel.OpenStocks, Mode=OneWay}"
                   SelectedItem="{x:Bind ViewModel.SelectedOpenStock, Mode=TwoWay}"
                   DisplayMemberPath="StockName"
                   BorderBrush="Gray"
                   BorderThickness="2"/>-->
-
-        <StackPanel Grid.Column="1" Background="White">
-            <StackPanel Background="LightCyan">
-                <TextBlock Text="Dane użytkownika"
+        <ScrollViewer Grid.Column="1">
+            <StackPanel Background="White">
+                <StackPanel Background="LightCyan">
+                    <TextBlock Text="Dane użytkownika"
                            Margin="10"/>
-                <TextBlock  Text="{x:Bind ViewModel.CurrentUser.UserName, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                    <TextBlock  Text="{x:Bind ViewModel.CurrentUser.UserName, Mode=TwoWay, UpdateSourceTrigger=Default}"
                         x:Name="UserName"
                         Margin="10"/>
-                <TextBlock  Text="{x:Bind ViewModel.CurrentUser.AccountBalance, Mode=TwoWay, UpdateSourceTrigger=Default}"
+                    <TextBlock  Text="{x:Bind ViewModel.CurrentUser.AccountBalance, Mode=TwoWay, UpdateSourceTrigger=Default}"
                         x:Name="AccountBalance"
                         Margin="10"/>
-            </StackPanel>
+                </StackPanel>
 
-            <TextBlock  Margin="10"
+                <TextBlock  Margin="10"
                         x:Name="SelectedOpenStockName">
                         <Run>Nazwa akcji: </Run>
                         <Run Text="{x:Bind ViewModel.SelectedOpenStock.StockName, Mode=OneWay}" />
-            </TextBlock>
-            <TextBlock  Margin="10"
+                </TextBlock>
+                <TextBlock  Margin="10"
                         x:Name="SelectedOpenStockSymbol">
                         <Run>Symbol akcji: </Run>
                         <Run Text="{x:Bind ViewModel.SelectedOpenStock.Symbol, Mode=OneWay}" />
-            </TextBlock>
-            <TextBlock  Margin="10"
+                </TextBlock>
+                <TextBlock  Margin="10"
                         x:Name="SelectedOpenStockAmount">
                         <Run>Liczba posiadanych akcji: </Run>
                         <Run Text="{x:Bind ViewModel.SelectedOpenStock.Amount, Mode=OneWay}" />
-            </TextBlock>
-            <TextBlock  Margin="10"
+                </TextBlock>
+                <TextBlock  Margin="10"
                         x:Name="SelectedOpenStockBuyPrice">
                         <Run>Cena zakupu: </Run>
                         <Run Text="{x:Bind ViewModel.SelectedOpenStock.BuyPrice, Mode=OneWay}" />
-            </TextBlock>
-            <TextBlock  Margin="10"
+                </TextBlock>
+                <TextBlock  Margin="10"
                         x:Name="SelectedOpenStockCurrentPrice">
                         <Run>Obecna cena akcji: </Run>
                         <Run Text="{x:Bind ViewModel.SelectedOpenStock.CurrentPrice, Mode=OneWay}" />
-            </TextBlock>
-            <TextBlock  Margin="10"
+                </TextBlock>
+                <TextBlock  Margin="10"
                         x:Name="SelectedOpenStockPercentChange">
                         <Run>Zmiana procentowa pozycji: </Run>
                         <Run Text="{x:Bind ViewModel.SelectedOpenStock.PercentChange, Mode=OneWay}" />
-            </TextBlock>
-            <TextBlock  Margin="10"
+                </TextBlock>
+                <TextBlock  Margin="10"
                         x:Name="SelectedOpenStockOpenDateTime">
                         <Run>Data zakupu: </Run>
                         <Run Text="{x:Bind ViewModel.SelectedOpenStock.OpenDateTime, Mode=OneWay}" />
-            </TextBlock>
+                </TextBlock>
 
-            <TextBox Header="Ilość sztuk do sprzedaży"
+                <TextBox Header="Ilość sztuk do sprzedaży"
                      Margin="10"
                      x:Name="SelectedNumberOfStocksToSell"/>
 
-            <TextBlock x:Name="ErrorText" Margin="10" FontSize="18" Foreground="Red"/>
+                <TextBlock x:Name="ErrorText" Margin="10" FontSize="18" Foreground="Red"/>
 
-            <Button Background="OrangeRed" Margin="10" x:Name="SellStockButton" Content="Sprzedaj akcje" Click="SellStockButton_Click"/>
+                <Button Background="OrangeRed" Margin="10" x:Name="SellStockButton" Content="Sprzedaj akcje" Click="SellStockButton_Click"/>
 
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

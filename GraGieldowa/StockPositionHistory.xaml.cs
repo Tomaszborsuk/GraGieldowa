@@ -34,35 +34,42 @@ namespace GraGieldowa
 
                 using var db = new ApplicationDbContext();
                 var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
-                var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
-
-                var historyPositions = db.ClosedPositions.Where(x => x.UserId.ToString() == currentUserId).ToList();
-                foreach (var postion in historyPositions)
+                if (currentUserId != null)
                 {
-                    var stockHistoryModel = new StockHistoryViewModel
+                    var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
+
+                    var historyPositions = db.ClosedPositions.Where(x => x.UserId.ToString() == currentUserId).ToList();
+                    foreach (var postion in historyPositions)
                     {
-                        StockName = postion.StockName,
-                        Symbol = postion.Symbol,
-                        BuyPrice = postion.OpenPrice.ToString(),
-                        ClosePrice = postion.ClosePrice.ToString(),
-                        ROIPercent = postion.ROIPercent.ToString() + "%",
-                        NetProfit = postion.NetProfit.ToString(),
-                        OpenDateTime = postion.OpenDate.ToString(),
-                        CloseDateTime = postion.CloseDate.ToString(),
-                        //Id = postion.Id,
-                        Amount = postion.Amount,
-                        //UserId = postion.UserId
-                    };
-                    ViewModel.HistoryStocks.Add(stockHistoryModel);
-                }
+                        var stockHistoryModel = new StockHistoryViewModel
+                        {
+                            StockName = postion.StockName,
+                            Symbol = postion.Symbol,
+                            BuyPrice = postion.OpenPrice.ToString(),
+                            ClosePrice = postion.ClosePrice.ToString(),
+                            ROIPercent = postion.ROIPercent.ToString() + "%",
+                            NetProfit = postion.NetProfit.ToString(),
+                            OpenDateTime = postion.OpenDate.ToString(),
+                            CloseDateTime = postion.CloseDate.ToString(),
+                            //Id = postion.Id,
+                            Amount = postion.Amount,
+                            //UserId = postion.UserId
+                        };
+                        ViewModel.HistoryStocks.Add(stockHistoryModel);
+                    }
 
-                var userModel = new UserViewModel
+                    var userModel = new UserViewModel
+                    {
+                        UserName = currentUser.UserName,
+                        Id = currentUser.Id,
+                        AccountBalance = currentUser.AccountBalance.ToString()
+                    };
+                    ViewModel.CurrentUser = userModel;
+                }
+                else
                 {
-                    UserName = currentUser.UserName,
-                    Id = currentUser.Id,
-                    AccountBalance = currentUser.AccountBalance.ToString()
-                };
-                ViewModel.CurrentUser = userModel;
+
+                }
             }
             catch (Exception ex)
             {

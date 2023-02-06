@@ -41,44 +41,52 @@ namespace GraGieldowa
             {
                 this.InitializeComponent();
                 ViewModel = new StockPossessionViewModel();
+                ErrorText.Text = "";
 
                 using var db = new ApplicationDbContext();
                 var currentUserId = db.Configs.Where(x => x.Key == "UserId").Select(x => x.Value).FirstOrDefault();
-                var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
-                string userId = currentUser.XTBUserId;
-                string password = currentUser.XTBPassword;
-
-                SyncAPIConnector connector = new SyncAPIConnector(serverData);
-                Credentials credentials = new Credentials(userId, password, "", "YOUR APP NAME");
-                LoginResponse loginResponse = APICommandFactory.ExecuteLoginCommand(connector, credentials, true);
-                AllSymbolsResponse allSymbolsResponse = APICommandFactory.ExecuteAllSymbolsCommand(connector, true);
-                var polishSymbols = allSymbolsResponse.SymbolRecords.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC").ToList();
-
-                var possessedStocks = db.OpenPositions.Where(x => x.UserId.ToString() == currentUserId).ToList();
-                foreach (var stock in possessedStocks)
+                if (currentUserId != null)
                 {
-                    var stockPossesionModel = new OpenStockViewModel
+                    var currentUser = db.Users.Where(x => x.Id.ToString() == currentUserId).FirstOrDefault();
+                    string userId = currentUser.XTBUserId;
+                    string password = currentUser.XTBPassword;
+
+                    SyncAPIConnector connector = new SyncAPIConnector(serverData);
+                    Credentials credentials = new Credentials(userId, password, "", "YOUR APP NAME");
+                    LoginResponse loginResponse = APICommandFactory.ExecuteLoginCommand(connector, credentials, true);
+                    AllSymbolsResponse allSymbolsResponse = APICommandFactory.ExecuteAllSymbolsCommand(connector, true);
+                    var polishSymbols = allSymbolsResponse.SymbolRecords.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC").ToList();
+
+                    var possessedStocks = db.OpenPositions.Where(x => x.UserId.ToString() == currentUserId).ToList();
+                    foreach (var stock in possessedStocks)
                     {
-                        StockName = stock.StockName,
-                        Amount = stock.Amount,
-                        Symbol = stock.Symbol,
-                        BuyPrice = stock.Price.ToString(),
-                        PercentChange = ((Math.Round(polishSymbols.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC" && x.Symbol == stock.Symbol && x.Description == stock.StockName).Select(x => (decimal)x.Bid).FirstOrDefault() / stock.Price * 100, 2)) - 100).ToString() + "%",
-                        Id = stock.Id,
-                        OpenDateTime = stock.OpenDate.ToString(),
-                        UserId = stock.UserId,
-                        CurrentPrice = polishSymbols.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC" && x.Symbol == stock.Symbol && x.Description == stock.StockName).Select(x => x.Bid.ToString()).FirstOrDefault()
-                    };
-                    ViewModel.OpenStocks.Add(stockPossesionModel);
-                }
+                        var stockPossesionModel = new OpenStockViewModel
+                        {
+                            StockName = stock.StockName,
+                            Amount = stock.Amount,
+                            Symbol = stock.Symbol,
+                            BuyPrice = stock.Price.ToString(),
+                            PercentChange = ((Math.Round(polishSymbols.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC" && x.Symbol == stock.Symbol && x.Description == stock.StockName).Select(x => (decimal)x.Bid).FirstOrDefault() / stock.Price * 100, 2)) - 100).ToString() + "%",
+                            Id = stock.Id,
+                            OpenDateTime = stock.OpenDate.ToString(),
+                            UserId = stock.UserId,
+                            CurrentPrice = polishSymbols.Where(x => x.CurrencyProfit == "PLN" && x.CategoryName == "STC" && x.Symbol == stock.Symbol && x.Description == stock.StockName).Select(x => x.Bid.ToString()).FirstOrDefault()
+                        };
+                        ViewModel.OpenStocks.Add(stockPossesionModel);
+                    }
 
-                var userModel = new UserViewModel
+                    var userModel = new UserViewModel
+                    {
+                        UserName = currentUser.UserName,
+                        Id = currentUser.Id,
+                        AccountBalance = currentUser.AccountBalance.ToString()
+                    };
+                    ViewModel.CurrentUser = userModel;
+                }
+                else
                 {
-                    UserName = currentUser.UserName,
-                    Id = currentUser.Id,
-                    AccountBalance = currentUser.AccountBalance.ToString()
-                };
-                ViewModel.CurrentUser = userModel;
+                    ErrorText.Text = "Nie masz wybranego użytkownika";
+                }
             }
             catch (Exception ex)
             {
